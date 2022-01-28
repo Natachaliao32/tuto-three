@@ -4,6 +4,9 @@ import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { GUI } from 'dat.gui'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -140,9 +143,10 @@ loadWhale()
 // CREATE SEA OF STARS
 
 function createStar(size, x, y, z, material) {
-  const geometry = new THREE.SphereGeometry(size)
+  const geometry = new THREE.SphereGeometry( size )
   const star = new THREE.Mesh( geometry, material )
-  star.position.set(x, y, z)
+  star.position.set( x, y, z )
+  // star.layers.set( 1 )
   return star
 }
 
@@ -166,14 +170,28 @@ function createStars(n) {
   // Create n stars at random positions and add to scene
 
   for (let i = 0; i < n; i++) {
-    let pos = generateRandomPosition(-6, 6, -3, 3, -10, 1)
-    let star = createStar(.05, pos.x, pos.y, pos.z, material)
-    stars.add(star)
+    let pos = generateRandomPosition( -6, 6, -3, 3, -10, 1 )
+    let star = createStar( .05, pos.x, pos.y, pos.z, material )
+    stars.add( star )
   }
-  scene.add(stars)
+  scene.add( stars )
 }
 
 createStars(10)
+
+// CREATE GLOW EFFECT WITH BLOOM PASS
+
+// const renderScene = new RenderPass( scene, camera )
+// const bloomPass = new UnrealBloomPass( new THREE.Vector2(width, height), 1.5, .4, .85 )
+// bloomPass.treshold = 0
+// bloomPass.strength = 2
+// bloomPass.radius = 0
+
+// const bloomComposer = new EffectComposer( renderer )
+// bloomComposer.setSize( width, height )
+// bloomComposer.renderToScreen = true
+// bloomComposer.addPass( renderScene )
+// bloomComposer.addPass( bloomPass )
 
 // RENDER SCENE
 
