@@ -22,13 +22,18 @@ renderer.setSize( width, height )
 // Create scene
 
 const scene = new THREE.Scene()
-scene.background = textureLoader.load("/assets/galaxy2.jpg")
+// scene.background = textureLoader.load("/assets/galaxy2.jpg")
 
 // Create camera
 
-const fov = 75; const aspect = width / height; const near = .1; const far = 10000;  
+const fov = 75; const aspect = width / height; const near = .1; const far = 10000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
 camera.position.z = 5;
+
+// CREATE AXES HELPER
+
+const axesHelper = new THREE.AxesHelper( 2 );
+scene.add( axesHelper );
 
 // CREATE LIGHTS
 
@@ -78,7 +83,7 @@ function createMoon() {
   } );
 
   // Create sphere and add to scene
-  
+
   const sphere = new THREE.Mesh(geometry, material)
 
   return sphere
@@ -96,18 +101,21 @@ function loadWhale() {
   // Create material
 
   const material = new THREE.MeshStandardMaterial( {color: 0x26267c} )
-    
+
   // Load 3D model
 
-  const onLoad = obj => { 
+  const onLoad = obj => {
 
     whale = obj
 
     // Transform
 
-    whale.scale.multiplyScalar(.5)
-    whale.rotation.z -= Math.PI / 10
-    whale.position.y = 1
+    whale.scale.multiplyScalar(.002)
+    // whale.rotation.set(0, Math.PI / 2, 0)
+    // whale.rotation.set(0, 0, Math.PI / 2)
+    // whale.rotation.set(Math.PI / 2, 0, 0)
+    whale.rotation.x -=  Math.PI / 2
+    whale.position.y = 1.5
 
     // Set material
 
@@ -126,12 +134,12 @@ function loadWhale() {
 
     // Add whale to scene
 
-    scene.add(whale) 
+    scene.add(whale)
   }
-  
+
   const onError = error => { alert(error) }
 
-  objLoader.load( '/assets/whale.obj', onLoad, undefined, onError )
+  objLoader.load( '/assets/whale2.obj', onLoad, undefined, onError )
 
 }
 
@@ -159,34 +167,76 @@ function createStars(n) {
 
   const material = new THREE.MeshStandardMaterial( { color: 0xf7f386} )
 
-  // Create a group 
+  // Create a group
 
   const stars = new THREE.Group()
 
   // Create n stars at random positions and add to scene
 
   for (let i = 0; i < n; i++) {
-    let pos = generateRandomPosition(-6, 6, -3, 3, -10, 1)
+    let pos = generateRandomPosition(-6, 6, -3, 3, -10, 10)
     let star = createStar(.05, pos.x, pos.y, pos.z, material)
     stars.add(star)
   }
-  scene.add(stars)
+
+  return stars;
 }
 
-createStars(10)
+const stars = createStars(100)
+scene.add(stars)
+
+// RESIZE WINDOW
+
+function onWindowResize() {
+
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize( width, height );
+}
+
+window.addEventListener('resize', onWindowResize)
+
+// Move whale
+
+// IN CONSTRUCTION
+// function moveWhale(time) {
+//   const x = Math.sin( time * 0.7 ) * 0.8
+//   const y = Math.cos( time * 0.5 ) * 0.8
+//   const z = Math.cos( time * 0.3 ) * 0.8
+//   return new THREE.Vector3( x, y, z )
+// }
 
 // RENDER SCENE
 
 function animate() {
+
+  const time = Date.now() * 0.0005;
+
   requestAnimationFrame( animate )
 
   // Controls
   controls.update()
 
-  // Animation
-  // if(whale) whale.rotation.y -= 0.01
+  // ANIMATION
+
+  // Moon
+
   moon.rotation.x += 0.001
   moon.rotation.y -= 0.001
+
+  // Whale
+
+  // IN CONSTRUCTION
+  // if(whale) {
+  //   const pos = moveWhale(time)
+  //   whale.lookAt(pos.x, pos.y, pos.z)
+  //   whale.rotateY(Math.PI / 2)
+  //   whale.position.set(pos.x, pos.y, pos.z)
+  // }
 
   renderer.render( scene, camera )
 }
