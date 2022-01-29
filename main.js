@@ -4,12 +4,16 @@ import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { GUI } from 'dat.gui'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js'
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 
 const width = window.innerWidth
 const height = window.innerHeight
 
 const textureLoader = new THREE.TextureLoader()
 const objLoader = new OBJLoader()
+const tgaLoader = new TGALoader()
+const fbxLoader = new FBXLoader()
 
 // SET UP SCENE
 
@@ -23,6 +27,7 @@ renderer.setSize( width, height )
 
 const scene = new THREE.Scene()
 // scene.background = textureLoader.load("/assets/galaxy2.jpg")
+scene.background = new THREE.Color( 0xffffff )
 
 // Create camera
 
@@ -67,7 +72,6 @@ function createMoon() {
   // Load textures
 
   const texture = textureLoader.load('/assets/pluto_texture.jpg')
-  // const normal = textureLoader.load('/assets/moon_normal.jpg')
   const bump = textureLoader.load('/assets/pluto_bump.jpg')
 
   // Create geometry
@@ -110,27 +114,27 @@ function loadWhale() {
 
     // Transform
 
-    whale.scale.multiplyScalar(.002)
+    whale.scale.multiplyScalar(.01)
     // whale.rotation.set(0, Math.PI / 2, 0)
     // whale.rotation.set(0, 0, Math.PI / 2)
     // whale.rotation.set(Math.PI / 2, 0, 0)
-    whale.rotation.x -=  Math.PI / 2
+    // whale.rotation.x -=  Math.PI / 2
     whale.position.y = 1.5
 
     // Set material
 
-    whale.traverse( child => {
-      if(child instanceof THREE.Mesh) child.material = material
-    })
+    // whale.traverse( child => {
+    //   if(child instanceof THREE.Mesh) child.material = material
+    // })
 
     // Create color helper
 
-    const whaleFolder = gui.addFolder('Whale')
-    const whaleColor = { color: 0x26267c }
-    whaleFolder.addColor(whaleColor, 'color')
-    .onChange( () => {
-      whale.children[0].material.color.set(whaleColor.color)
-    } )
+    // const whaleFolder = gui.addFolder('Whale')
+    // const whaleColor = { color: 0x26267c }
+    // whaleFolder.addColor(whaleColor, 'color')
+    // .onChange( () => {
+    //   whale.children[0].material.color.set(whaleColor.color)
+    // } )
 
     // Add whale to scene
 
@@ -139,7 +143,7 @@ function loadWhale() {
 
   const onError = error => { alert(error) }
 
-  objLoader.load( '/assets/whale2.obj', onLoad, undefined, onError )
+  fbxLoader.load( '/assets/UFO_FBX/Low_poly_UFO.FBX', onLoad, undefined, onError )
 
 }
 
@@ -197,6 +201,46 @@ function onWindowResize() {
 
   renderer.setSize( width, height );
 }
+
+function createSkybox() {
+
+  // Create a cube
+
+  const geometry = new THREE.BoxGeometry(10, 10, 10)
+
+  // Create an array of 6 materials, one for each face
+
+  const materials = [
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_ft.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_bk.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_up.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_dn.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_rt.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_lf.png')} ),
+  ]
+
+  // const materials = [
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_ft.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_bk.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_up.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_dn.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_rt.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_lf.png')} ),
+  // ]
+
+  // Render the inside instead of the outside
+
+  materials.forEach( material => {
+    material.side = THREE.BackSide;
+  })
+
+  const skybox = new THREE.Mesh( geometry, materials )
+
+  return skybox
+}
+
+const skybox = createSkybox()
+scene.add( skybox )
 
 window.addEventListener('resize', onWindowResize)
 
