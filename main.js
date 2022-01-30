@@ -1,18 +1,15 @@
 import './style.css'
 
 import * as THREE from 'three'
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { GUI } from 'dat.gui'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { TGALoader } from 'three/examples/jsm/loaders/TGALoader.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 
 const width = window.innerWidth
 const height = window.innerHeight
 
 const textureLoader = new THREE.TextureLoader()
-const objLoader = new OBJLoader()
-const tgaLoader = new TGALoader()
+
 const fbxLoader = new FBXLoader()
 
 // SET UP SCENE
@@ -100,48 +97,6 @@ scene.add(moon)
 // LOAD WHALE
 
 let object;
-
-function loadWhale() {
-
-  // Create material
-
-  const material = new THREE.MeshStandardMaterial( {color: 0x26267c} )
-
-  // Load 3D model
-
-  const onLoad = obj => {
-
-    object = obj
-
-    // Transform
-
-    object.scale.multiplyScalar(.002)
-
-    // Set material
-
-    object.traverse( child => {
-      if(child instanceof THREE.Mesh) child.material = material
-    })
-
-    // Create color helper
-
-    const whaleFolder = gui.addFolder('Whale')
-    const whaleColor = { color: 0x26267c }
-    whaleFolder.addColor(whaleColor, 'color')
-    .onChange( () => {
-      object.children[0].material.color.set(whaleColor.color)
-    } )
-
-    // Add object to scene
-
-    scene.add(object)
-  }
-
-  const onError = error => { alert(error) }
-
-  objLoader.load( '/assets/whale2.obj', onLoad, undefined, onError )
-
-}
 
 function loadUFO() {
 
@@ -238,15 +193,6 @@ function createSkybox() {
     new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_lf.png')} ),
   ]
 
-  // const materials = [
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_ft.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_bk.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_up.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_dn.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_rt.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_lf.png')} ),
-  // ]
-
   // Render the inside instead of the outside
 
   materials.forEach( material => {
@@ -314,9 +260,6 @@ function animate() {
     // For UFO
     object.rotateY(Math.PI / 2)
     object.rotateZ(-Math.PI / 2)
-    // For whale
-    // object.rotateZ(Math.PI / 2)
-    // object.rotateX(-Math.PI)
   }
 
   renderer.render( scene, camera )
