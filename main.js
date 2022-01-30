@@ -114,7 +114,7 @@ function loadWhale() {
 
     // Transform
 
-    whale.scale.multiplyScalar(.002)
+    whale.scale.multiplyScalar(.01)
     // whale.rotation.set(0, Math.PI / 2, 0)
     // whale.rotation.set(0, 0, Math.PI / 2)
     // whale.rotation.set(Math.PI / 2, 0, 0)
@@ -122,9 +122,9 @@ function loadWhale() {
 
     // Set material
 
-    whale.traverse( child => {
-      if(child instanceof THREE.Mesh) child.material = material
-    })
+    // whale.traverse( child => {
+    //   if(child instanceof THREE.Mesh) child.material = material
+    // })
 
     // Create color helper
 
@@ -142,7 +142,7 @@ function loadWhale() {
 
   const onError = error => { alert(error) }
 
-  objLoader.load( '/assets/whale2.obj', onLoad, undefined, onError )
+  fbxLoader.load( '/assets/UFO_FBX/Low_poly_UFO.FBX', onLoad, undefined, onError )
 
 }
 
@@ -285,9 +285,9 @@ function animate() {
     }
     whale.position.set(pos.x, pos.y, pos.z)
     whale.lookAt(0, 0, 0)
-    // whale.rotateY(Math.PI / 2)
-    whale.rotateX(-Math.PI)
+    whale.rotateY(Math.PI / 2)
     whale.rotateZ(-Math.PI / 2)
+    // whale.rotateX(-Math.PI)
   }
 
   renderer.render( scene, camera )
