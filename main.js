@@ -26,8 +26,7 @@ renderer.setSize( width, height )
 // Create scene
 
 const scene = new THREE.Scene()
-// scene.background = textureLoader.load("/assets/galaxy2.jpg")
-scene.background = new THREE.Color( 0xffffff )
+scene.background = new THREE.Color( 0x00ff00)
 
 // Create camera
 
@@ -64,6 +63,8 @@ pointLightFolder.add(pointLight, 'distance', 0, 10, 1)
 // CREATE CONTROLS
 
 const controls = new OrbitControls( camera, renderer.domElement )
+controls.maxDistance = 9
+controls.minDistance = 3.5
 
 // CREATE MOON
 
@@ -98,7 +99,7 @@ scene.add(moon)
 
 // LOAD WHALE
 
-let whale;
+let object;
 
 function loadWhale() {
 
@@ -110,21 +111,17 @@ function loadWhale() {
 
   const onLoad = obj => {
 
-    whale = obj
+    object = obj
 
     // Transform
 
-    whale.scale.multiplyScalar(.01)
-    // whale.rotation.set(0, Math.PI / 2, 0)
-    // whale.rotation.set(0, 0, Math.PI / 2)
-    // whale.rotation.set(Math.PI / 2, 0, 0)
-    // whale.rotation.x -=  Math.PI / 2
+    object.scale.multiplyScalar(.002)
 
     // Set material
 
-    // whale.traverse( child => {
-    //   if(child instanceof THREE.Mesh) child.material = material
-    // })
+    object.traverse( child => {
+      if(child instanceof THREE.Mesh) child.material = material
+    })
 
     // Create color helper
 
@@ -132,12 +129,35 @@ function loadWhale() {
     const whaleColor = { color: 0x26267c }
     whaleFolder.addColor(whaleColor, 'color')
     .onChange( () => {
-      whale.children[0].material.color.set(whaleColor.color)
+      object.children[0].material.color.set(whaleColor.color)
     } )
 
-    // Add whale to scene
+    // Add object to scene
 
-    scene.add(whale)
+    scene.add(object)
+  }
+
+  const onError = error => { alert(error) }
+
+  objLoader.load( '/assets/whale2.obj', onLoad, undefined, onError )
+
+}
+
+function loadUFO() {
+
+  // Load 3D model
+
+  const onLoad = obj => {
+
+    object = obj
+
+    // Transform
+
+    object.scale.multiplyScalar(.01)
+
+    // Add object to scene
+
+    scene.add(object)
   }
 
   const onError = error => { alert(error) }
@@ -146,7 +166,7 @@ function loadWhale() {
 
 }
 
-loadWhale()
+loadUFO()
 
 // CREATE SEA OF STARS
 
@@ -243,14 +263,12 @@ scene.add( skybox )
 
 window.addEventListener('resize', onWindowResize)
 
-// Move whale
+// Move object
 
-// IN CONSTRUCTION
 function revolve(time, cx, cy, cz, r) {
   const x = cx + Math.cos(time) * r
   const y = cy + Math.sin(time) * r
   const z = cz + Math.cos(time) * r
-  // console.log(y)
   return new THREE.Vector3( x, y, z )
 }
 
@@ -272,22 +290,33 @@ function animate() {
   moon.rotation.x += 0.001
   moon.rotation.y -= 0.001
 
-  // Whale
+  // Object
 
-  // IN CONSTRUCTION
-  if(whale) {
+  if(object) {
+
+    // Get new position coordinates
+
     const pos = revolve(time, 0, 0, 0, 2)
-    // whale.lookAt(pos.x, pos.y, pos.z)
-    // console.log(whale.up)
-    if((whale.position.x >= 0 && pos.x <= 0) || (whale.position.x <= 0 && pos.x >= 0)) {
-      console.log("x")
-      whale.up.set(0, -whale.up.y, 0)
+
+    // When object reaches negative x, inverse the up vector
+
+    if((object.position.x >= 0 && pos.x <= 0) || (object.position.x <= 0 && pos.x >= 0)) {
+      object.up.set(0, -object.up.y, 0)
     }
-    whale.position.set(pos.x, pos.y, pos.z)
-    whale.lookAt(0, 0, 0)
-    whale.rotateY(Math.PI / 2)
-    whale.rotateZ(-Math.PI / 2)
-    // whale.rotateX(-Math.PI)
+
+    // Give the object its new position
+
+    object.position.set(pos.x, pos.y, pos.z)
+
+    // Turn the object towards the center of the planet
+
+    object.lookAt(0, 0, 0)
+    // For UFO
+    object.rotateY(Math.PI / 2)
+    object.rotateZ(-Math.PI / 2)
+    // For whale
+    // object.rotateZ(Math.PI / 2)
+    // object.rotateX(-Math.PI)
   }
 
   renderer.render( scene, camera )
