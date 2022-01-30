@@ -114,27 +114,26 @@ function loadWhale() {
 
     // Transform
 
-    whale.scale.multiplyScalar(.01)
+    whale.scale.multiplyScalar(.002)
     // whale.rotation.set(0, Math.PI / 2, 0)
     // whale.rotation.set(0, 0, Math.PI / 2)
     // whale.rotation.set(Math.PI / 2, 0, 0)
     // whale.rotation.x -=  Math.PI / 2
-    whale.position.y = 1.5
 
     // Set material
 
-    // whale.traverse( child => {
-    //   if(child instanceof THREE.Mesh) child.material = material
-    // })
+    whale.traverse( child => {
+      if(child instanceof THREE.Mesh) child.material = material
+    })
 
     // Create color helper
 
-    // const whaleFolder = gui.addFolder('Whale')
-    // const whaleColor = { color: 0x26267c }
-    // whaleFolder.addColor(whaleColor, 'color')
-    // .onChange( () => {
-    //   whale.children[0].material.color.set(whaleColor.color)
-    // } )
+    const whaleFolder = gui.addFolder('Whale')
+    const whaleColor = { color: 0x26267c }
+    whaleFolder.addColor(whaleColor, 'color')
+    .onChange( () => {
+      whale.children[0].material.color.set(whaleColor.color)
+    } )
 
     // Add whale to scene
 
@@ -143,7 +142,7 @@ function loadWhale() {
 
   const onError = error => { alert(error) }
 
-  fbxLoader.load( '/assets/UFO_FBX/Low_poly_UFO.FBX', onLoad, undefined, onError )
+  objLoader.load( '/assets/whale2.obj', onLoad, undefined, onError )
 
 }
 
@@ -247,12 +246,13 @@ window.addEventListener('resize', onWindowResize)
 // Move whale
 
 // IN CONSTRUCTION
-// function moveWhale(time) {
-//   const x = Math.sin( time * 0.7 ) * 0.8
-//   const y = Math.cos( time * 0.5 ) * 0.8
-//   const z = Math.cos( time * 0.3 ) * 0.8
-//   return new THREE.Vector3( x, y, z )
-// }
+function revolve(time, cx, cy, cz, r) {
+  const x = cx + Math.cos(time) * r
+  const y = cy + Math.sin(time) * r
+  const z = cz + Math.cos(time) * r
+  // console.log(y)
+  return new THREE.Vector3( x, y, z )
+}
 
 // RENDER SCENE
 
@@ -275,12 +275,20 @@ function animate() {
   // Whale
 
   // IN CONSTRUCTION
-  // if(whale) {
-  //   const pos = moveWhale(time)
-  //   whale.lookAt(pos.x, pos.y, pos.z)
-  //   whale.rotateY(Math.PI / 2)
-  //   whale.position.set(pos.x, pos.y, pos.z)
-  // }
+  if(whale) {
+    const pos = revolve(time, 0, 0, 0, 2)
+    // whale.lookAt(pos.x, pos.y, pos.z)
+    // console.log(whale.up)
+    if((whale.position.x >= 0 && pos.x <= 0) || (whale.position.x <= 0 && pos.x >= 0)) {
+      console.log("x")
+      whale.up.set(0, -whale.up.y, 0)
+    }
+    whale.position.set(pos.x, pos.y, pos.z)
+    whale.lookAt(0, 0, 0)
+    // whale.rotateY(Math.PI / 2)
+    whale.rotateX(-Math.PI)
+    whale.rotateZ(-Math.PI / 2)
+  }
 
   renderer.render( scene, camera )
 }
