@@ -1,6 +1,6 @@
 # tuto-three
 
-# Présentation
+## Présentation
 
 Il s'agit d'un tuto sur three.js que j'ai créé et qui doit présenter les bases de la librairie. WIP.
 
