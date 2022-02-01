@@ -2,7 +2,7 @@
 
 ## Présentation
 
-Il s'agit d'un tuto sur three.js que j'ai créé et qui doit présenter les bases de la librairie. WIP.
+Il s'agit d'un tuto sur three.js que je suis en train de créer et qui doit présenter les bases de la librairie. WIP.
 
 ## Lancer le projet
 
