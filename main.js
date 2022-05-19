@@ -72,8 +72,8 @@ function createMoon() {
 
   // Load textures
 
-  const texture = textureLoader.load('/assets/pluto_texture.jpg')
-  const bump = textureLoader.load('/assets/pluto_bump.jpg')
+  const texture = textureLoader.load('./assets/pluto_texture.jpg')
+  const bump = textureLoader.load('./assets/pluto_bump.jpg')
 
   // Create geometry
 
@@ -139,7 +139,7 @@ function loadWhale() {
 
   const onError = error => { alert(error) }
 
-  objLoader.load( '/assets/whale2.obj', onLoad, undefined, onError )
+  objLoader.load( './assets/whale2.obj', onLoad, undefined, onError )
 
 }
 
@@ -162,7 +162,7 @@ function loadUFO() {
 
   const onError = error => { alert(error) }
 
-  fbxLoader.load( '/assets/UFO_FBX/Low_poly_UFO.FBX', onLoad, undefined, onError )
+  fbxLoader.load( './assets/UFO_FBX/Low_poly_UFO.FBX', onLoad, undefined, onError )
 
 }
 
@@ -230,21 +230,21 @@ function createSkybox() {
   // Create an array of 6 materials, one for each face
 
   const materials = [
-    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_ft.png')} ),
-    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_bk.png')} ),
-    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_up.png')} ),
-    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_dn.png')} ),
-    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_rt.png')} ),
-    new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/kurt/space_lf.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/kurt/space_ft.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/kurt/space_bk.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/kurt/space_up.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/kurt/space_dn.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/kurt/space_rt.png')} ),
+    new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/kurt/space_lf.png')} ),
   ]
 
   // const materials = [
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_ft.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_bk.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_up.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_dn.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_rt.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('/assets/ulukai/corona_lf.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_ft.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_bk.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_up.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_dn.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_rt.png')} ),
+  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_lf.png')} ),
   // ]
 
   // Render the inside instead of the outside
