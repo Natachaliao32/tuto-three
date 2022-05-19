@@ -1,11 +1,10 @@
-export default {
+import { defineConfig } from 'vite'
+
+export default defineConfig({
     build: {
-        chunkSizeWarningLimit: 700,
-        rollupOptions: {
-            external: [
-                /node_modules/
-            ]
+        commonjsOptions: {
+          include: [/node_modules/]
         }
     },
     base: '/tuto-three/'
-}
+})
