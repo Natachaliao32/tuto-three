@@ -238,15 +238,6 @@ function createSkybox() {
     new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/kurt/space_lf.png')} ),
   ]
 
-  // const materials = [
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_ft.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_bk.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_up.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_dn.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_rt.png')} ),
-  //   new THREE.MeshBasicMaterial( { map: textureLoader.load('./assets/ulukai/corona_lf.png')} ),
-  // ]
-
   // Render the inside instead of the outside
 
   materials.forEach( material => {
